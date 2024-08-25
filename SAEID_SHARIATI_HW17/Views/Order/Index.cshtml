@@ -1,0 +1,78 @@
+﻿@model BusinessLogicLayer.Model.OrderDetail
+
+<form method="post">
+    <label asp-for="OrderId"></label>
+    <input asp-for="OrderId" name="OrderId" />
+    <button type="submit">Filter</button>
+</form>
+
+<table class="table"
+    <thead>
+        <tr>
+
+            <td>First Name</td>
+            <td>Last Name</td>
+            <td>Address</td>
+            <td>Customer Phone</td>
+            <td>Order Date</td>
+            <td>Required Date</td>
+            <td>Shipped Date</td>
+            <td>Staff First Name</td>
+            <td>Staff Last Name</td>
+            <td></td>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null)
+        {
+                    <tr style="font-size:.8rem">
+
+                    <td>@Model.FirstName</td>
+                    <td>@Model.LastName</td>
+                    <td>@Model.Address</td>
+                    <td>@Model.Phone</td>
+                    <td>@Model.OrderDate</td>
+                    <td>@Model.RequiredDate</td>
+                    <td>@Model.ShippedDate</td>
+                    <td>@Model.StaffFirstName</td>
+                    <td>@Model.StaffLastName</td>
+                    <td>
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Details</button>
+                    </td>
+                </tr>
+        }
+    </tbody>
+</table>
+<!--
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Order Details</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function Detail() { 
+        const myModal = document.getElementById('myModal')
+        const myInput = document.getElementById('myInput')
+
+        myModal.addEventListener('shown.bs.modal', () => {
+            myInput.focus()
+        })
+    }
+</script>
