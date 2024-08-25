@@ -56,7 +56,52 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                ...
+                <table class="table table-striped border border-1 rounded rounded-1">
+                    <thead>
+                        <tr>
+                            <td>
+                                Product Id
+                            </td>
+                            <td>
+                                Product Name
+                            </td>
+                            <td>
+                                Quantity
+                            </td>
+                            <td>
+                                Product Price
+                            </td>
+                            <td>
+                                Product Discount
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null)
+                        {
+                            foreach (var item in Model.orderItemDetails)
+                            {
+                                <tr>
+                                    <td>
+                                        @item.ProductId
+                                    </td>
+                                    <td>
+                                        @item.ProductName
+                                    </td>
+                                    <td>
+                                        @item.Quantity
+                                    </td>
+                                    <td>
+                                        @item.PriceProduct
+                                    </td>
+                                    <td>
+                                        @item.DiscountProduct
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

@@ -19,5 +19,9 @@ namespace BusinessLogicLayer.Model
         public string Phone { get; set; }
         public string StaffFirstName { get; set; }
         public string StaffLastName { get; set; }
+        public List<OrderItemDetail> orderItemDetails { get; set; }=new List<OrderItemDetail>();
+        public decimal TotalPrice { get; set; }
+        public decimal Discount { get; set; }
+        public decimal PurePayment { get; set; }
     }
 }

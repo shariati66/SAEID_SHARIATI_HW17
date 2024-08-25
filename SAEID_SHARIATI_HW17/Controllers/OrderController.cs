@@ -1,7 +1,10 @@
 ﻿using BusinessLogicLayer.Model;
 using BusinessLogicLayer.Services.CustomerService;
+using BusinessLogicLayer.Services.OrderItemService;
 using BusinessLogicLayer.Services.OrderService;
+using BusinessLogicLayer.Services.ProductServiceSession;
 using BusinessLogicLayer.Services.StaffService;
+using DataAccessLayer.Entities;
 using DataAccessLayer.Interface.OrdersRepository;
 using Microsoft.AspNetCore.Mvc;
 using System.Configuration;
@@ -13,11 +16,15 @@ namespace SAEID_SHARIATI_HW17.Controllers
         private readonly ICustomerService _customer;
         private readonly IOrderService _order;
         private readonly IStaffService _staff;
+        private readonly IOrderItemService _orderItem;
+        private readonly IProductService _product;
         public OrderController(IConfiguration configuration)
         {
             _customer = new CustomerService(configuration);
             _order = new OrderService(configuration);
             _staff = new StaffService(configuration);
+            _orderItem = new OrderItemService(configuration);
+            _product = new ProductService(configuration);
         }
         public IActionResult Index()
         {
@@ -37,6 +44,8 @@ namespace SAEID_SHARIATI_HW17.Controllers
                 {
                     var customers = _customer.GetAll();
                     var staffs = _staff.GetAll();
+                    var orderItems = _orderItem.GetAll();
+                    var products = _product.GetAll();
                     var result = orders.Join(customers, order => order.CustomerId, customer => customer.CustomerId, (o, c) => new
                     {
                         OrderId = o.OrderId,
@@ -61,6 +70,30 @@ namespace SAEID_SHARIATI_HW17.Controllers
                         StaffFirstName = c.FirstName,
                         StaffLastname = c.LastName
                     }).ToList();
+                    var details = orderItems.Where(order => order.OrderId == OrderId).ToList().Join(products, o => o.ProductId, p => p.ProductId,(o,p)=> new
+                    {
+                        OrderId=o.OrderId,
+                        ProductId = o.ProductId,
+                        ProductName= p.ProductName,
+                        Quantity = o.Quantity,
+                        PriceProduct = o.ListPrice * o.Quantity,
+                        DiscountProduct = o.ListPrice * o.Discount * o.Quantity,
+                        PaymentProduct = (o.ListPrice * o.Quantity)-(o.ListPrice * o.Discount * o.Quantity),
+                        
+                    }).ToList();
+                    List<OrderItemDetail> orderItemDetails = new List<OrderItemDetail>();
+                    foreach(var item in details)
+                    {
+                        OrderItemDetail orderItemDetail = new OrderItemDetail();
+                        orderItemDetail.OrderId = item.OrderId;
+                        orderItemDetail.ProductId = item.ProductId;
+                        orderItemDetail.ProductName = item.ProductName;
+                        orderItemDetail.Quantity= item.Quantity;
+                        orderItemDetail.PriceProduct = item.PriceProduct;
+                        orderItemDetail.DiscountProduct = item.DiscountProduct;
+                        orderItemDetail.PaymentProduct = item.PaymentProduct;
+                    }
+                   
                     orderDetail = new()
                     {
                         OrderId = result[0].OrderId,
@@ -74,6 +107,10 @@ namespace SAEID_SHARIATI_HW17.Controllers
                         StaffFirstName = result[0].StaffFirstName ?? "",
                         StaffLastName = result[0].StaffLastname ?? ""
                     };
+                    orderDetail.orderItemDetails= orderItemDetails;
+                    orderDetail.TotalPrice = orderItemDetails.Sum(o => o.PriceProduct);
+                    orderDetail.Discount = orderItemDetails.Sum(s=>s.DiscountProduct);
+                    orderDetail.PurePayment = orderItemDetails.Sum(s => s.PaymentProduct);
                 }
             }
             return View(orderDetail);
