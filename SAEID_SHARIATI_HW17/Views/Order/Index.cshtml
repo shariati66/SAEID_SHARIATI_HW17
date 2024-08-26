@@ -26,21 +26,21 @@
 
         @if (Model != null)
         {
-                                <tr style="font-size:.8rem">
+                                                <tr style="font-size:.8rem">
 
-                                <td>@Model.FirstName</td>
-                                <td>@Model.LastName</td>
-                                <td>@Model.Address</td>
-                                <td>@Model.Phone</td>
-                                <td>@Model.OrderDate</td>
-                                <td>@Model.RequiredDate</td>
-                                <td>@Model.ShippedDate</td>
-                                <td>@Model.StaffFirstName</td>
-                                <td>@Model.StaffLastName</td>
-                                <td>
-                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Details</button>
-                                </td>
-                            </tr>
+                                                <td>@Model.FirstName</td>
+                                                <td>@Model.LastName</td>
+                                                <td>@Model.Address</td>
+                                                <td>@Model.Phone</td>
+                                                <td>@Model.OrderDate</td>
+                                                <td>@Model.RequiredDate</td>
+                                                <td>@Model.ShippedDate</td>
+                                                <td>@Model.StaffFirstName</td>
+                                                <td>@Model.StaffLastName</td>
+                                                <td>
+                                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Details</button>
+                                                </td>
+                                            </tr>
         }
 
     </tbody>
@@ -107,13 +107,25 @@
 
                     </tbody>
                 </table>
-                <div class="modal-footer"
-                @if (Model != null)
-                {
-                        <label  style="color:blue">
-                            Amount Payable : @Model.PurePayment
+                <div dir="rtl">
+                    <div class="form-control w-25" style="direction:ltr;"
+                        @if (Model != null)
+                        {
+
+                            <label style="color:orangered;">
+                                Total : @Model.TotalPrice
                             </label>
-                }
+                            <br />
+                            <label style="color:green;">
+                                Discount : @Model.Discount
+                            </label>
+                            <br />
+                            <label style="color:blue;font-size:1.2rem;font-weight:500;">
+                                Amount Payable : @Model.PurePayment
+                            </label>
+
+                        }
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
