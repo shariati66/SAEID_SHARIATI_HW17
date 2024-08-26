@@ -1,8 +1,8 @@
 ﻿@model BusinessLogicLayer.Model.OrderDetail
 
 <form method="post">
-    <label asp-for="OrderId"></label>
-    <input asp-for="OrderId" name="OrderId" />
+    <label for="orderId">Order Id</label>
+    <input id="orderId" name="OrderId" />
     <button type="submit">Filter</button>
 </form>
 
@@ -110,7 +110,7 @@
                 <div class="modal-footer"
                 @if (Model != null)
                 {
-                        <label class="modal-footer text-primary">
+                        <label  style="color:blue">
                             Amount Payable : @Model.PurePayment
                             </label>
                 }

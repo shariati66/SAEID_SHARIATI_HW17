@@ -110,9 +110,9 @@ namespace SAEID_SHARIATI_HW17.Controllers
                         StaffLastName = result[0].StaffLastname ?? ""
                     };
                     orderDetail.orderItemDetails = detailsOrder;
-                    orderDetail.TotalPrice = detailsOrder.Sum(o => o.PriceProduct);
-                    orderDetail.Discount = detailsOrder.Sum(s=>s.DiscountProduct);
-                    orderDetail.PurePayment = detailsOrder.Sum(s => s.PaymentProduct);
+                    orderDetail.TotalPrice =Math.Round( detailsOrder.Sum(o => o.PriceProduct),2);
+                    orderDetail.Discount = Math.Round(detailsOrder.Sum(s=>s.DiscountProduct),2);
+                    orderDetail.PurePayment =Math.Round(detailsOrder.Sum(s => s.PaymentProduct),2);
                 }
             }
             return View(orderDetail);
