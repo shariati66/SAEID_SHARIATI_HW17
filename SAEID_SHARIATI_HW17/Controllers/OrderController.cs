@@ -29,6 +29,7 @@ namespace SAEID_SHARIATI_HW17.Controllers
         public IActionResult Index()
         {
             OrderDetail orderdetail = null;
+            
             return View(orderdetail);
         }
         [HttpPost]
@@ -81,7 +82,7 @@ namespace SAEID_SHARIATI_HW17.Controllers
                         PaymentProduct = (o.ListPrice * o.Quantity)-(o.ListPrice * o.Discount * o.Quantity),
                         
                     }).ToList();
-                    List<OrderItemDetail> orderItemDetails = new List<OrderItemDetail>();
+                    List<OrderItemDetail> detailsOrder= new List<OrderItemDetail>();
                     foreach(var item in details)
                     {
                         OrderItemDetail orderItemDetail = new OrderItemDetail();
@@ -92,6 +93,7 @@ namespace SAEID_SHARIATI_HW17.Controllers
                         orderItemDetail.PriceProduct = item.PriceProduct;
                         orderItemDetail.DiscountProduct = item.DiscountProduct;
                         orderItemDetail.PaymentProduct = item.PaymentProduct;
+                        detailsOrder.Add(orderItemDetail);
                     }
                    
                     orderDetail = new()
@@ -107,10 +109,10 @@ namespace SAEID_SHARIATI_HW17.Controllers
                         StaffFirstName = result[0].StaffFirstName ?? "",
                         StaffLastName = result[0].StaffLastname ?? ""
                     };
-                    orderDetail.orderItemDetails= orderItemDetails;
-                    orderDetail.TotalPrice = orderItemDetails.Sum(o => o.PriceProduct);
-                    orderDetail.Discount = orderItemDetails.Sum(s=>s.DiscountProduct);
-                    orderDetail.PurePayment = orderItemDetails.Sum(s => s.PaymentProduct);
+                    orderDetail.orderItemDetails = detailsOrder;
+                    orderDetail.TotalPrice = detailsOrder.Sum(o => o.PriceProduct);
+                    orderDetail.Discount = detailsOrder.Sum(s=>s.DiscountProduct);
+                    orderDetail.PurePayment = detailsOrder.Sum(s => s.PaymentProduct);
                 }
             }
             return View(orderDetail);
